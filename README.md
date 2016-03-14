@@ -8,54 +8,106 @@ funk(c)tional programming for Java >= 8.
 ## Pattern Matching
 
 ```java
-    @Test
-    public void shouldMatchHeadOfList() throws Exception {
-        final String actual = new Pattern<List<String>>()
-                .when(nil(() -> "nil"))
-                .when(head(x -> "head: " + x))
-                .match(asList("one", "two", "three"));
+@Test
+public void shouldMatchHeadOfList() throws Exception {
+    final String actual = new Pattern<List<String>>()
+            .when(nil(() -> "nil"))
+            .when(head(x -> "head: " + x))
+            .match(asList("one", "two", "three"));
 
-        assertEquals("head: one", actual);
-    }
+    assertEquals("head: one", actual);
+}
 
-    @Test
-    public void shouldMatchSome() throws Exception {
-        final String actual = new Pattern<Optional<String>>()
-                .when(none(() -> "got: none"))
-                .when(some(e -> "got: some " + e))
-                .match(Optional.of("foo"));
+@Test
+public void shouldMatchSome() throws Exception {
+    final String actual = new Pattern<Optional<String>>()
+            .when(none(() -> "got: none"))
+            .when(some(e -> "got: some " + e))
+            .match(Optional.of("foo"));
 
-        assertEquals("got: some foo", actual);
-    }
+    assertEquals("got: some foo", actual);
+}
 
-    @Test
-    public void shouldCalcFibonacci() throws Exception {
-        final int i = fibonacciRecursion(10);
-        assertEquals(55, i);
-    }
+@Test
+public void shouldCalcFibonacci() throws Exception {
+    final int i = fibonacciRecursion(10);
+    assertEquals(55, i);
+}
 
-    public static int fibonacciRecursion(int val) {
-        return new Pattern<Integer>()
-                .when(eq(1, i -> 1))
-                .when(eq(2, i -> 1))
-                .when(__(x -> fibonacciRecursion(x - 1) + fibonacciRecursion(x - 2)))
-                .match(val);
-    }
+public static int fibonacciRecursion(int val) {
+    return new Pattern<Integer>()
+            .when(eq(1, i -> 1))
+            .when(eq(2, i -> 1))
+            .when(__(x -> fibonacciRecursion(x - 1) + fibonacciRecursion(x - 2)))
+            .match(val);
+}
 
-    @Test
-    public void shouldReuseMatcher() throws Exception {
+@Test
+public void shouldReuseMatcher() throws Exception {
 
-        final Match<String, String> matcher = new Pattern<String>()
-                .when(eq("foo", s -> "got: " + s))
-                .when(eq("bar", bar -> "got" + bar))
-                ;
+    final Match<String, String> matcher = new Pattern<String>()
+            .when(eq("foo", s -> "got: " + s))
+            .when(eq("bar", bar -> "got" + bar))
+            ;
 
-        assertEquals("gotbar", matcher.match("bar"));
-        assertEquals("got: foo", matcher.match("foo"));
-    }
+    assertEquals("gotbar", matcher.match("bar"));
+    assertEquals("got: foo", matcher.match("foo"));
+}
 
 }
 ```
+
+## ```Option<T>``` for safe null handling
+```java
+@Test
+public void shouldFilterSome() throws Exception {
+    assertTrue(some("foo").filter(s -> s.equals("foo")).isPresent());
+}
+
+@Test
+public void shouldComposeWithStream() throws Exception {
+    Option<String> foo = some("foo");
+    Option<String> none = none();
+    final String actual = Stream.of(foo, none)
+            .flatMap(Option::toStream)
+            .collect(joining());
+
+    assertEquals("foo", actual);
+}
+
+```
+
+
+## ```Try<T>``` for safe exception handling
+```java
+@Test
+public void shouldReturnCorrectValueWithoutThrowing() throws Exception {
+    String actual = Try.from("foo")
+            .filter(s -> s.equals("foo"))
+            .map(s -> s + "bar")
+            .peek(System.out::println)
+            .transform(Try::success, Try::failure)
+            .recover(throwable -> "not used")
+            .orElse("not used");
+
+    assertEquals("foobar", actual);
+}
+
+```
+
+## ```Lazy<T>``` for lazy initialization
+```java
+@Test
+public void whenCalledMultipleTimes_ReturnCachedResult() throws Exception {
+    Lazy<Integer> lazy = Lazy.of(() -> new Random().nextInt());
+    Integer actual = lazy.get();
+    Integer actualNext = lazy.get();
+    assertEquals(actual, actualNext);
+}
+
+```
+
+And more...
 
 ## Binaries
 
