@@ -1,12 +1,13 @@
 package funk4j.matching;
 
+import funk4j.adt.Try;
 import funk4j.tuples.Pair;
 import org.junit.Test;
 
 import java.util.*;
 
 import static funk4j.matching.Matchers.*;
-import static funk4j.matching.Matchers.any;
+import static funk4j.matching.Matchers.tryFailure;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 
@@ -43,12 +44,67 @@ public class MatchersTest {
     }
 
     @Test
+    public void shouldMatchSuccessOfTry() throws Exception {
+        final String actual = new Pattern<Try<String>>()
+                .when(trySuccess(s -> "got " + s))
+                .match(Try.success("foo"));
+
+        assertEquals("got foo", actual);
+    }
+
+    @Test
+    public void shouldExtractSuccessOfTry() throws Exception {
+        final String actual = new Pattern<Try<String>>()
+                .when(trySuccess(eq("foo"), s -> "got " + s))
+                .match(Try.success("foo"));
+
+        assertEquals("got foo", actual);
+    }
+
+    @Test
+    public void shouldMatchFailureOfTry() throws Exception {
+        final String actual = new Pattern<Try<String>>()
+                .when(tryFailure(s -> "got " + s.getMessage()))
+                .match(Try.failure(new RuntimeException("foo")));
+
+        assertEquals("got foo", actual);
+    }
+
+    @Test
+    public void shouldExtractFailureOfTry() throws Exception {
+        final RuntimeException exception = new RuntimeException("foo");
+        final String actual = new Pattern<Try<String>>()
+                .when(tryFailure(eq(exception), s -> "got " + s.getMessage()))
+                .match(Try.failure(exception));
+
+        assertEquals("got foo", actual);
+    }
+
+    @Test
     public void shouldMatchOneCaseWhenEq() throws Exception {
         final String actual = new Pattern<String>()
                 .when(eq("foo", s -> "got: " + s))
                 .match("foo");
 
         assertEquals("got: foo", actual);
+    }
+
+    @Test
+    public void shouldMatchOneNullCase() throws Exception {
+        final String actual = new Pattern<String>()
+                .when(isNull(() -> "got null"))
+                .match(null);
+
+        assertEquals("got null", actual);
+    }
+
+    @Test
+    public void shouldMatchOneNotNullCase() throws Exception {
+        final String actual = new Pattern<String>()
+                .when(isNotNull(e -> "got " + e))
+                .match("foo");
+
+        assertEquals("got foo", actual);
     }
 
     @Test

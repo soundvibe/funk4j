@@ -1,5 +1,6 @@
 package funk4j.matching;
 
+import funk4j.adt.Try;
 import funk4j.functions.*;
 import funk4j.tuples.Pair;
 
@@ -38,6 +39,14 @@ public interface Matchers {
                 .map(func::apply);
     }
 
+    static <T,R> Matcher<T,R> isNull(Supplier<R> supplier) {
+        return value -> value == null ? Optional.of(supplier.get()) : Optional.empty();
+    }
+
+    static <T, R> Matcher<T,R> isNotNull(Func1<T, R> func) {
+        return value -> value != null ? Optional.of(func.apply(value)) : Optional.empty();
+    }
+
     static <T,U extends T,R> Matcher<T,R> classOf(Class<U> aClass, Func1<U, R> func) {
         return val -> Optional.ofNullable(val)
                 .filter(t -> aClass.equals(t.getClass()))
@@ -64,6 +73,26 @@ public interface Matchers {
         return val -> val
                 .flatMap(matcher::matches)
                 .map(func::apply);
+    }
+
+    static <T,R> Matcher<Try<T>,R> trySuccess(Func1<T, R> func) {
+        return val -> val.map(func::apply).toOptional();
+    }
+
+    static <T,U,R> Matcher<Try<T>,R> trySuccess(Matcher<T, U> matcher, Func1<U, R> func) {
+        return val -> val
+                .flatMap(t -> Try.from(matcher.matches(t)))
+                .map(func::apply)
+                .toOptional();
+    }
+
+    static <T,R> Matcher<Try<T>,R> tryFailure(Func1<Throwable, R> func) {
+        return val -> val.isFailure() ? Optional.of(func.apply(val.getFailure())) : Optional.empty();
+    }
+
+    static <T,R> Matcher<Try<T>,R> tryFailure(Matcher<Throwable, Throwable> matcher, Func1<Throwable, R> func) {
+        return val -> val.isFailure() && matcher.matches(val.getFailure()).isPresent() ?
+                Optional.of(func.apply(val.getFailure())) : Optional.empty();
     }
 
     static <R> Matcher<String,R> regex(String regex, Func1<String, R> func) {

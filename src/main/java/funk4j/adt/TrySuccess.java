@@ -8,6 +8,8 @@ import java.util.*;
 import java.util.function.*;
 
 import static funk4j.matching.Matchers.*;
+import static funk4j.matching.Matchers.tryFailure;
+import static funk4j.matching.Matchers.trySuccess;
 
 /**
  * @author OZY on 2015.08.15.
@@ -56,12 +58,8 @@ public final class TrySuccess<T> implements Try<T>, Serializable {
             .when(instanceOf(Boolean.class, Func1.identity()))
             .when(instanceOf(Collection.class, list -> !list.isEmpty()))
             .when(instanceOf(Optional.class, Optional::isPresent))
-            .when(eq(null, o -> false))
-            //.when(s)
-
-           /* caseOfNull(() -> false),
-            caseOfSuccess(a -> true),
-            caseOfFailure(a -> false)*/
+            .when(isNull(() -> false))
+            .when(instanceOf(Try.class, Try::isSuccess))
     ;
 
 
