@@ -1,6 +1,7 @@
 package funk4j.matching;
 
 import funk4j.functions.*;
+import funk4j.tuples.Pair;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -112,5 +113,14 @@ public interface Matchers {
                 .filter(ts -> ts.size() > 3)
                 .map(ts -> func5.apply(Lists.head(ts), Lists.head(ts, 1), Lists.head(ts, 2), Lists.head(ts, 3), Lists.tail(ts, 4)));
     }
+
+    static <T1, T2, U1, U2, R> Matcher<Pair<T1,T2>,R> pair(Matcher<T1, U1> matcher1, Matcher<T2, U2> matcher2,
+                                                           Func2<U1, U2, R> func) {
+        return val -> Optional.ofNullable(val)
+                .flatMap(pair -> matcher1.matches(pair._1)
+                        .flatMap(t1 -> matcher2.matches(pair._2).map(t2 -> Pair.of(t1, t2))))
+                .map(pair -> func.apply(pair._1, pair._2));
+    }
+
 
 }

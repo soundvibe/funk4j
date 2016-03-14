@@ -1,10 +1,12 @@
 package funk4j.matching;
 
+import funk4j.tuples.Pair;
 import org.junit.Test;
 
 import java.util.*;
 
 import static funk4j.matching.Matchers.*;
+import static funk4j.matching.Matchers.any;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 
@@ -249,6 +251,31 @@ public class MatchersTest {
                 .match("sra");
 
         assertEquals("regex matched", actual);
+    }
+
+    @Test
+    public void shouldExtractPairWhenEq() throws Exception {
+        final String actual = new Pattern<Pair<String, Integer>>()
+                .when(pair(eq("foo"), eq(100), (_1, _2) -> _1 + "bar"))
+                .match(Pair.of("foo", 100));
+
+        assertEquals("foobar", actual);
+    }
+
+    @Test(expected = MatchError.class)
+    public void shouldNotExtractPairWhenEq() throws Exception {
+        new Pattern<Pair<String, Integer>>()
+                .when(pair(eq("foo"), eq(150), (_1, _2) -> _1 + "bar"))
+                .match(Pair.of("foo", 100));
+    }
+
+    @Test
+    public void shouldExtractPairWhenAny() throws Exception {
+        final String actual = new Pattern<Pair<String, Integer>>()
+                .when(pair(__(), __(), (_1, _2) -> _1 + "bar" + _2))
+                .match(Pair.of("foo", 100));
+
+        assertEquals("foobar100", actual);
     }
 
     class Foo {

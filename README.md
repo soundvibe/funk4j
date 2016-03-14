@@ -1,5 +1,6 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.soundvibe/funk4j/badge.svg)](https://maven-badges.herokuapp.com/maven-central/net.soundvibe/funk4j)
 [![Build Status](https://travis-ci.org/soundvibe/funk4j.png)](https://travis-ci.org/soundvibe/funk4j)
+[![Coverage Status](https://codecov.io/github/soundvibe/funk4j/coverage.svg?branch=master)](https://codecov.io/github/soundvibe/funk4j?branch=master)
 
 # funk4j
 

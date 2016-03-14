@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 import static funk4j.adt.Option.*;
@@ -41,6 +42,27 @@ public class OptionTest {
     }
 
     @Test
+    public void shouldCreateFromOptional() throws Exception {
+        final String actual = Option.from(Optional.of("foo"))
+                .get();
+        assertEquals("foo", actual);
+    }
+
+    @Test
+    public void shouldEnumerate() throws Exception {
+        AtomicReference<String> actual = new AtomicReference<>();
+        Option.of("foo").foreach(actual::set);
+        assertEquals("foo", actual.get());
+    }
+
+    @Test
+    public void shouldConvertToOptional() throws Exception {
+        final String actual = Option.of("foo").toOptional()
+                .get();
+        assertEquals("foo", actual);
+    }
+
+    @Test
     public void whenMap() throws Exception {
         assertEquals(1, some("foo").map(s -> 1).get().intValue());
     }
@@ -51,8 +73,36 @@ public class OptionTest {
     }
 
     @Test
+    public void shouldFlatMapNone() throws Exception {
+        assertTrue(none().flatMap(Option::some).isEmpty());
+    }
+
+    @Test
+    public void shouldMapNone() throws Exception {
+        assertTrue(none().map(o -> "foo").isEmpty());
+    }
+
+    @Test
     public void whenOrElse() throws Exception {
         assertEquals("foo", none().orElse("foo"));
+    }
+
+    @Test
+    public void shouldSkipOrElseWhenSome() throws Exception {
+        final String actual = some("foo").orElse("bar");
+        assertEquals("foo", actual);
+    }
+
+    @Test
+    public void shouldSkipOrElseGetWhenSome() throws Exception {
+        final String actual = some("foo").orElseGet(() -> "bar");
+        assertEquals("foo", actual);
+    }
+
+    @Test
+    public void shouldSkipOrElseThrowWhenSome() throws Exception {
+        final String actual = some("foo").orElseThrow(IllegalStateException::new);
+        assertEquals("foo", actual);
     }
 
     @Test
@@ -119,12 +169,21 @@ public class OptionTest {
     }
 
     @Test
-    public void shouldCast() throws Exception {
+    public void shouldCastSome() throws Exception {
         Option<Object> foo = some("foo");
         final String actual = foo.cast(String.class)
                 .get();
 
         assertEquals("foo", actual);
+    }
+
+    @Test
+    public void shouldCastNone() throws Exception {
+        Option<Object> foo = none();
+        final boolean actual = foo.cast(String.class)
+                .isPresent();
+
+        assertEquals(false, actual);
     }
 
     @Test

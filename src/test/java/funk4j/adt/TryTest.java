@@ -7,6 +7,7 @@ import org.junit.rules.ExpectedException;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.Assert.*;
 
@@ -95,6 +96,42 @@ public class TryTest {
                 .failed()
                 .get();
 
+    }
+
+    @Test
+    public void shouldFlatMapFailure() throws Exception {
+        assertTrue(Try.failure(new RuntimeException())
+                .flatMap(o -> Try.success("foo"))
+                .isFailure());
+    }
+
+    @Test
+    public void shouldFilterFailure() throws Exception {
+        assertTrue(Try.failure(new RuntimeException())
+                .filter(o -> true)
+                .isFailure());
+    }
+
+    @Test
+    public void shouldFilterFailureWithFailureMappingButUseOriginalFailure() throws Exception {
+        final Throwable error = Try.failure(new RuntimeException())
+                .filter(o -> true, o1 -> new IllegalStateException("error"))
+                .getFailure();
+
+        assertEquals(RuntimeException.class, error.getClass());
+
+        final Throwable error2 = Try.failure(new RuntimeException())
+                .filter(o -> true, () -> new IllegalStateException("error"))
+                .getFailure();
+
+        assertEquals(RuntimeException.class, error2.getClass());
+    }
+
+    @Test
+    public void shouldDoNothingWhenForeachOnFailure() throws Exception {
+        AtomicBoolean state = new AtomicBoolean(false);
+        Try.failure(new RuntimeException()).foreach(e -> state.set(true));
+        assertFalse(state.get());
     }
 
     @SuppressWarnings({"ThrowableResultOfMethodCallIgnored", "NumericOverflow"})
@@ -237,6 +274,15 @@ public class TryTest {
     }
 
     @Test
+    public void shouldReturnResultInOrElseIfFailure() throws Exception {
+        final Object actual = Try.failure(new RuntimeException()).orElse("foo");
+        assertEquals("foo", actual);
+
+        final Object actual2 = Try.failure(new RuntimeException()).orElse(() -> "foo");
+        assertEquals("foo", actual2);
+    }
+
+    @Test
     public void whenIsFailureOfRuntimeExceptionOrElseThrow_ThrowsItWithoutMapping() throws Exception {
         exception.expect(IllegalStateException.class);
         exception.expectMessage("foo");
@@ -332,6 +378,12 @@ public class TryTest {
         String actual = Try.from("foo")
                 .orElse(Throwable::getMessage);
 
+        assertEquals("foo", actual);
+    }
+
+    @Test
+    public void shouldConvertToOption() throws Exception {
+        final String actual = Try.from("foo").toOption().get();
         assertEquals("foo", actual);
     }
 

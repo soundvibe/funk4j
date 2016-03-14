@@ -29,7 +29,7 @@ public class ExpiringCacheTest {
         assertEquals("Should get foo from cache", "foo", actual3);
         assertEquals("Should get bar from cache", "bar", actual4);
 
-        Thread.sleep(130L);
+        Thread.sleep(140L);
 
         final String actual5 = sut.computeIfAbsent("1", s -> "fooNew");
         final String actual6 = sut.computeIfAbsent("2", s -> "barNew");
