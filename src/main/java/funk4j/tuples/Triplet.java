@@ -2,6 +2,7 @@ package funk4j.tuples;
 
 import java.io.Serializable;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -57,12 +58,12 @@ public final class Triplet<T1, T2, T3> implements Serializable {
         return new Triplet<>(this._1, this._2, arg3);
     }
 
-    public Stream<Object> stream() {
-        return Stream.of(this._1, this._2, this._3);
-    }
-
-    public Stream<Object> parallelStream() {
-        return stream().parallel();
+    static <T,T1 extends T, T2 extends T,T3 extends T> void forEach(
+            Triplet<T1, T2, T3> triplet,
+            Consumer<? super T> consumer) {
+        consumer.accept(triplet._1);
+        consumer.accept(triplet._2);
+        consumer.accept(triplet._3);
     }
 
     @Override

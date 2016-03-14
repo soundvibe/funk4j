@@ -2,6 +2,7 @@ package funk4j.tuples;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,9 +53,13 @@ public class TripletTest {
     }
 
     @Test
-    public void stream_Size_Is_3() throws Exception {
-        assertEquals(3, defaultTriplet().stream().count());
-        assertEquals(3, defaultTriplet().parallelStream().count());
+    public void shouldForeach() throws Exception {
+        final ArrayList<String> list = new ArrayList<>(3);
+        Triplet.forEach(defaultTriplet(), list::add);
+        assertEquals(3, list.size());
+        assertEquals("foo", list.get(0));
+        assertEquals("bar", list.get(1));
+        assertEquals("1", list.get(2));
     }
 
     @Test

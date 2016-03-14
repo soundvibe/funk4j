@@ -2,6 +2,7 @@ package funk4j.tuples;
 
 import java.io.Serializable;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -61,12 +62,11 @@ public final class Pair<T1, T2> implements Serializable {
         return new Pair<>(this._1, arg2);
     }
 
-    public Stream<Object> stream() {
-        return Stream.of(this._1, this._2);
-    }
-
-    public Stream<Object> parallelStream() {
-        return stream().parallel();
+    static <T,T1 extends T, T2 extends T> void forEach(
+            Pair<T1, T2> pair,
+            Consumer<? super T> consumer) {
+        consumer.accept(pair._1);
+        consumer.accept(pair._2);
     }
 
     @Override

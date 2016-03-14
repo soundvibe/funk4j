@@ -2,6 +2,7 @@ package funk4j.tuples;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,9 +56,12 @@ public class PairTest {
     }
 
     @Test
-    public void stream_Size_Is_2() throws Exception {
-        assertEquals(2, defaultPair().stream().count());
-        assertEquals(2, defaultPair().parallelStream().count());
+    public void shouldForeach() throws Exception {
+        final ArrayList<String> list = new ArrayList<>(2);
+        Pair.forEach(defaultPair(), list::add);
+        assertEquals(2, list.size());
+        assertEquals("foo", list.get(0));
+        assertEquals("bar", list.get(1));
     }
 
     @Test
