@@ -22,6 +22,11 @@ public class OptionTest {
     }
 
     @Test
+    public void whenOfNull() throws Exception {
+        assertTrue(Option.of(null).isEmpty());
+    }
+
+    @Test
     public void whenIsEmpty() throws Exception {
         assertTrue(none().isEmpty());
     }
@@ -49,6 +54,11 @@ public class OptionTest {
     }
 
     @Test
+    public void shouldCreateFromEmptyOptional() throws Exception {
+        assertTrue(Option.from(Optional.empty()).isEmpty());
+    }
+
+    @Test
     public void shouldEnumerate() throws Exception {
         AtomicReference<String> actual = new AtomicReference<>();
         Option.of("foo").foreach(actual::set);
@@ -60,6 +70,11 @@ public class OptionTest {
         final String actual = Option.of("foo").toOptional()
                 .get();
         assertEquals("foo", actual);
+    }
+
+    @Test
+    public void shouldConvertToEmptyOptional() throws Exception {
+        assertFalse(Option.none().toOptional().isPresent());
     }
 
     @Test
@@ -200,6 +215,7 @@ public class OptionTest {
         final Option<String> notRight = some("bar");
 
         assertEquals(left, right);
+        assertEquals(left, left);
         assertNotEquals(left, notRight);
 
         assertEquals(left.hashCode(), right.hashCode());

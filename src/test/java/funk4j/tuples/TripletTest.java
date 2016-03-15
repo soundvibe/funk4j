@@ -43,6 +43,18 @@ public class TripletTest {
     }
 
     @Test
+    public void shouldBeEqual() throws Exception {
+        final Triplet<String, String, String> left = Triplet.of("foo", "bar", "1");
+        final Triplet<String, String, String> right = Triplet.of("foo", "bar", "1");
+        final Triplet<String, String, String> notRight = Triplet.of("NotFoo", "NotBar", "2");
+
+        assertEquals(left, right);
+        assertEquals(left.hashCode(), right.hashCode());
+        assertNotEquals(left, notRight);
+        assertNotEquals(left.hashCode(), notRight.hashCode());
+    }
+
+    @Test
     public void toString_Prints_Values() throws Exception {
         assertEquals("Triplet{_1=foo, _2=bar, _3=1}", defaultTriplet().toString());
     }

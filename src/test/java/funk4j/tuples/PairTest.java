@@ -41,6 +41,18 @@ public class PairTest {
     }
 
     @Test
+    public void shouldBeEqual() throws Exception {
+        final Pair<String, String> left = Pair.of("foo", "bar");
+        final Pair<String, String> right = Pair.of("foo", "bar");
+        final Pair<String, String> notRight = Pair.of("NotFoo", "NotBar");
+
+        assertEquals(left, right);
+        assertEquals(left.hashCode(), right.hashCode());
+        assertNotEquals(left, notRight);
+        assertNotEquals(left.hashCode(), notRight.hashCode());
+    }
+
+    @Test
     public void toString_Prints_Values() throws Exception {
         assertEquals("Pair{_1=foo, _2=bar}", defaultPair().toString());
     }

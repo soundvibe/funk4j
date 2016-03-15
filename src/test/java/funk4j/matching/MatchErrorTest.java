@@ -14,9 +14,11 @@ public class MatchErrorTest {
         final MatchError left = new MatchError("foo");
         final MatchError right = new MatchError("foo");
         final MatchError notRight = new MatchError("bar");
+        assertEquals(left, left);
         assertEquals(left, right);
         assertEquals(left.hashCode(), right.hashCode());
         assertNotEquals(left, notRight);
+        assertNotEquals(left, "foo");
     }
 
     @Test

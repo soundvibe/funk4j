@@ -163,6 +163,14 @@ public class TryTest {
     }
 
     @Test
+    public void whenIsNotFailure_IsFailureReturnsFalse() throws Exception {
+        boolean actual = Try.from(5)
+                .isFailure();
+
+        assertFalse(actual);
+    }
+
+    @Test
     public void whenIsSuccessToOptionalHasValue() throws Exception {
         String actual = Try.from("foo")
                 .toOptional()
@@ -398,6 +406,11 @@ public class TryTest {
         assertEquals("foo", actual);
     }
 
+    @Test
+    public void shouldConvertFailureToOption() throws Exception {
+        assertTrue(Try.failure(new RuntimeException("e")).toOption().isEmpty());
+    }
+
     @Test(expected = RuntimeException.class)
     public void shouldRunAsUnchecked() {
         Try.doUnchecked(this::throwsSomeException);
@@ -424,6 +437,37 @@ public class TryTest {
                 .ifFailure(exception::set);
 
         assertEquals(RuntimeException.class, exception.get().getClass());
+    }
+
+    @Test
+    public void shouldFailureHaveEqualsAndHashcode() throws Exception {
+        final RuntimeException exception = new RuntimeException("e");
+        final Try<Object> left = Try.failure(exception);
+        final Try<Object> right = Try.failure(exception);
+        final Try<Object> notRight = Try.failure(new IllegalArgumentException());
+
+        assertEquals(left, left);
+        assertEquals(left, right);
+        assertNotEquals(left, notRight);
+        assertNotEquals(left, "foo");
+
+        assertEquals(left.hashCode(), right.hashCode());
+        assertNotEquals(left.hashCode(), notRight.hashCode());
+    }
+
+    @Test
+    public void shouldSuccessHaveEqualsAndHashcode() throws Exception {
+        final Try<String> left = Try.success("foo");
+        final Try<String> right = Try.success("foo");
+        final Try<String> notRight = Try.success("bar");
+
+        assertEquals(left, left);
+        assertEquals(left, right);
+        assertNotEquals(left, notRight);
+        assertNotEquals(left, "foo");
+
+        assertEquals(left.hashCode(), right.hashCode());
+        assertNotEquals(left.hashCode(), notRight.hashCode());
     }
 
     private void throwsSomeException() throws IllegalAccessException {

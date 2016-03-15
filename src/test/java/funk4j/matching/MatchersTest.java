@@ -69,6 +69,13 @@ public class MatchersTest {
         assertEquals("got foo", actual);
     }
 
+    @Test(expected = MatchError.class)
+    public void shouldNotMatchFailureOfTry() throws Exception {
+        new Pattern<Try<String>>()
+                .when(tryFailure(s -> "got " + s.getMessage()))
+                .match(Try.success("foo"));
+    }
+
     @Test
     public void shouldExtractFailureOfTry() throws Exception {
         final RuntimeException exception = new RuntimeException("foo");
@@ -77,6 +84,14 @@ public class MatchersTest {
                 .match(Try.failure(exception));
 
         assertEquals("got foo", actual);
+    }
+
+    @Test(expected = MatchError.class)
+    public void shouldNotExtractFailureOfTry() throws Exception {
+        final RuntimeException exception = new RuntimeException("foo");
+        new Pattern<Try<String>>()
+                .when(tryFailure(eq(exception), s -> "got " + s.getMessage()))
+                .match(Try.success("foo"));
     }
 
     @Test
@@ -97,11 +112,29 @@ public class MatchersTest {
         assertEquals("got null", actual);
     }
 
+    @Test(expected = MatchError.class)
+    public void shouldNotMatchOneNullCase() throws Exception {
+        final String actual = new Pattern<String>()
+                .when(isNull(() -> "got null"))
+                .match("foo");
+
+        assertEquals("got null", actual);
+    }
+
     @Test
     public void shouldMatchOneNotNullCase() throws Exception {
         final String actual = new Pattern<String>()
                 .when(isNotNull(e -> "got " + e))
                 .match("foo");
+
+        assertEquals("got foo", actual);
+    }
+
+    @Test(expected = MatchError.class)
+    public void shouldNotMatchOneNotNullCase() throws Exception {
+        final String actual = new Pattern<String>()
+                .when(isNotNull(e -> "got " + e))
+                .match(null);
 
         assertEquals("got foo", actual);
     }
@@ -228,6 +261,13 @@ public class MatchersTest {
         assertEquals("nil", actual);
     }
 
+    @Test(expected = MatchError.class)
+    public void shouldNotMatchNilList() throws Exception {
+        new Pattern<List<String>>()
+                .when(nil(() -> "nil"))
+                .match(Collections.singletonList("foo"));
+    }
+
     @Test
     public void shouldMatchHeadTailOfList() throws Exception {
         final String actual = new Pattern<List<String>>()
@@ -236,6 +276,13 @@ public class MatchersTest {
                 .match(asList("one", "two", "three"));
 
         assertEquals("head: one tail: [two, three]", actual);
+    }
+
+    @Test(expected = MatchError.class)
+    public void shouldNotMatchHeadTailOfList() throws Exception {
+        new Pattern<List<String>>()
+                .when(headTail((x, xs) -> "head: " + x + " tail: " + xs))
+                .match(Collections.emptyList());
     }
 
     @Test
@@ -248,6 +295,13 @@ public class MatchersTest {
         assertEquals("head: onetwo tail: [three]", actual);
     }
 
+    @Test(expected = MatchError.class)
+    public void shouldNotMatch2HeadsTailOfList() throws Exception {
+        new Pattern<List<String>>()
+                .when(headTail((x1, x2, xs) -> "head: " + x1 + x2 + " tail: " + xs))
+                .match(Collections.emptyList());
+    }
+
     @Test
     public void shouldMatch3HeadsAndTailOfList() throws Exception {
         final String actual = new Pattern<List<String>>()
@@ -256,6 +310,13 @@ public class MatchersTest {
                 .match(asList("one", "two", "three", "four"));
 
         assertEquals("onetwothree tail: [four]", actual);
+    }
+
+    @Test(expected = MatchError.class)
+    public void shouldNotMatch3HeadsTailOfList() throws Exception {
+        new Pattern<List<String>>()
+                .when(headTail((x1, x2, x3, xs) -> x1 + x2 + x3 + " tail: " + xs))
+                .match(Collections.emptyList());
     }
 
     @Test(expected = MatchError.class)
@@ -278,6 +339,14 @@ public class MatchersTest {
         assertEquals("onetwothreefour tail: []", actual);
     }
 
+    @Test(expected = MatchError.class)
+    public void shouldNotMatch4HeadsTailOfList() throws Exception {
+        new Pattern<List<String>>()
+                .when(headTail((x1, x2, x3, x4, xs) -> x1 + x2 + x3 + x4 + " tail: " + xs))
+                .match(Collections.emptyList());
+    }
+
+
     @Test
     public void shouldMatchHeadOfList() throws Exception {
         final String actual = new Pattern<List<String>>()
@@ -288,6 +357,13 @@ public class MatchersTest {
         assertEquals("head: one", actual);
     }
 
+    @Test(expected = MatchError.class)
+    public void shouldNotMatchHeadOfList() throws Exception {
+        new Pattern<List<String>>()
+                .when(head(x -> "head: " + x))
+                .match(Collections.emptyList());
+    }
+
     @Test
     public void shouldMatchTailOfList() throws Exception {
         final String actual = new Pattern<List<String>>()
@@ -296,6 +372,13 @@ public class MatchersTest {
                 .match(asList("one", "two", "three"));
 
         assertEquals("tail: [two, three]", actual);
+    }
+
+    @Test(expected = MatchError.class)
+    public void shouldNotMatchTailOfList() throws Exception {
+        new Pattern<List<String>>()
+                .when(tail(xs -> "tail: " + xs))
+                .match(Collections.emptyList());
     }
 
     @Test
