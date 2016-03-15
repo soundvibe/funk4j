@@ -45,11 +45,19 @@ public class PairTest {
         final Pair<String, String> left = Pair.of("foo", "bar");
         final Pair<String, String> right = Pair.of("foo", "bar");
         final Pair<String, String> notRight = Pair.of("NotFoo", "NotBar");
+        final Pair<String, String> withRightNull = Pair.of("NotFoo", null);
+        final Pair<String, String> withLeftNull = Pair.of(null, "notBar");
 
+        assertEquals(left, left);
         assertEquals(left, right);
         assertEquals(left.hashCode(), right.hashCode());
         assertNotEquals(left, notRight);
+        assertNotEquals(left, null);
+        assertNotEquals(left, "foo");
         assertNotEquals(left.hashCode(), notRight.hashCode());
+
+        assertNotEquals(withLeftNull, withRightNull);
+        assertNotEquals(withLeftNull.hashCode(), withRightNull.hashCode());
     }
 
     @Test

@@ -47,11 +47,20 @@ public class TripletTest {
         final Triplet<String, String, String> left = Triplet.of("foo", "bar", "1");
         final Triplet<String, String, String> right = Triplet.of("foo", "bar", "1");
         final Triplet<String, String, String> notRight = Triplet.of("NotFoo", "NotBar", "2");
+        final Triplet<String, String, String> firstNull = Triplet.of(null, "NotBar", "2");
+        final Triplet<String, String, String> secondNull = Triplet.of("foo", null, "2");
+        final Triplet<String, String, String> thirdNull = Triplet.of("foo", "NotBar", null);
 
+        assertEquals(left, left);
         assertEquals(left, right);
         assertEquals(left.hashCode(), right.hashCode());
-        assertNotEquals(left, notRight);
+        assertNotEquals(left, firstNull);
+        assertNotEquals(left, secondNull);
+        assertNotEquals(left, thirdNull);
         assertNotEquals(left.hashCode(), notRight.hashCode());
+        assertNotEquals(left.hashCode(), firstNull.hashCode());
+        assertNotEquals(left.hashCode(), secondNull.hashCode());
+        assertNotEquals(left.hashCode(), thirdNull.hashCode());
     }
 
     @Test

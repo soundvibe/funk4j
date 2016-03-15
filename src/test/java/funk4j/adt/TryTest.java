@@ -450,6 +450,7 @@ public class TryTest {
         assertEquals(left, right);
         assertNotEquals(left, notRight);
         assertNotEquals(left, "foo");
+        assertNotEquals(left, null);
 
         assertEquals(left.hashCode(), right.hashCode());
         assertNotEquals(left.hashCode(), notRight.hashCode());
@@ -465,6 +466,7 @@ public class TryTest {
         assertEquals(left, right);
         assertNotEquals(left, notRight);
         assertNotEquals(left, "foo");
+        assertNotEquals(left, null);
 
         assertEquals(left.hashCode(), right.hashCode());
         assertNotEquals(left.hashCode(), notRight.hashCode());
