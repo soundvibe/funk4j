@@ -1,12 +1,9 @@
 package funk4j.tuples;
 
-import java.io.Serializable;
-import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.stream.Stream;
+import funk4j.adt.Option;
 
-import static java.util.Optional.ofNullable;
+import java.io.Serializable;
+import java.util.function.*;
 
 /**
  * @author OZY on 2014.12.16
@@ -30,16 +27,16 @@ public final class Triplet<T1, T2, T3> implements Serializable {
         return new Triplet<>(val1, val2, val3);
     }
 
-    public Optional<T1> maybe1() {
-        return ofNullable(_1);
+    public Option<T1> maybe1() {
+        return Option.of(_1);
     }
 
-    public Optional<T2> maybe2() {
-        return ofNullable(_2);
+    public Option<T2> maybe2() {
+        return Option.of(_2);
     }
 
-    public Optional<T3> maybe3() {
-        return ofNullable(_3);
+    public Option<T3> maybe3() {
+        return Option.of(_3);
     }
 
     public <R> R map(Function<Triplet<T1, T2, T3>, R> mapper) {

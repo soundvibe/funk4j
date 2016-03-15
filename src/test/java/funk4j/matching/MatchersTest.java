@@ -1,13 +1,12 @@
 package funk4j.matching;
 
-import funk4j.adt.Try;
+import funk4j.adt.*;
 import funk4j.tuples.Pair;
 import org.junit.Test;
 
 import java.util.*;
 
 import static funk4j.matching.Matchers.*;
-import static funk4j.matching.Matchers.tryFailure;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 
@@ -37,10 +36,10 @@ public class MatchersTest {
 
     @Test
     public void shouldNotMatchAndReturnNone() throws Exception {
-        final Optional<String> actual = new Pattern<String>()
+        final Option<String> actual = new Pattern<String>()
                 .when(eq("John", john -> "found"))
                 .apply("Bob");
-        assertEquals(Optional.empty(), actual);
+        assertEquals(Option.none(), actual);
     }
 
     @Test
@@ -181,41 +180,41 @@ public class MatchersTest {
 
     @Test
     public void shouldMatchNone() throws Exception {
-        final String actual = new Pattern<Optional<String>>()
+        final String actual = new Pattern<Option<String>>()
                 .when(none(() -> "got: none"))
-                .match(Optional.empty());
+                .match(Option.none());
 
         assertEquals("got: none", actual);
     }
 
     @Test
     public void shouldMatchSome() throws Exception {
-        final String actual = new Pattern<Optional<String>>()
+        final String actual = new Pattern<Option<String>>()
                 .when(none(() -> "got: none"))
                 .when(some(e -> "got: some " + e))
-                .match(Optional.of("foo"));
+                .match(Option.some("foo"));
 
         assertEquals("got: some foo", actual);
     }
 
     @Test
     public void shouldMatchSomeWithValue() throws Exception {
-        final String actual = new Pattern<Optional<String>>()
+        final String actual = new Pattern<Option<String>>()
                 .when(none(() -> "got: none"))
                 .when(some(eq("aaa"), e -> "got: some " + e))
                 .when(some(eq("foo"), e -> "got: some " + e))
-                .match(Optional.of("foo"));
+                .match(Option.of("foo"));
 
         assertEquals("got: some foo", actual);
     }
 
     @Test
     public void shouldMatchSomeWithAnyValue() throws Exception {
-        final String actual = new Pattern<Optional<String>>()
+        final String actual = new Pattern<Option<String>>()
                 .when(none(() -> "got: none"))
                 .when(some(eq("aaa"), e -> "got: some " + e))
                 .when(some(any(), e -> "got: some " + e))
-                .match(Optional.of("foo"));
+                .match(Option.of("foo"));
 
         assertEquals("got: some foo", actual);
     }

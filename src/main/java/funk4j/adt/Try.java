@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.*;
+import java.util.stream.Stream;
 
 /**
  * @author OZY on 2015.08.14.
@@ -121,6 +122,10 @@ public interface Try<T> {
 
     default Option<T> toOption() {
         return isSuccess() ? Option.of(get()) : Option.none();
+    }
+
+    default Stream<T> toStream() {
+        return isSuccess() ? Stream.of(get()) : Stream.empty();
     }
 
     T orElse(Func1<Throwable, T> otherFunc);

@@ -1,6 +1,6 @@
 package funk4j.matching;
 
-import java.util.Optional;
+import funk4j.adt.Option;
 
 /**
  * @author Cipolinas on 2016.03.10.
@@ -8,6 +8,6 @@ import java.util.Optional;
 @FunctionalInterface
 public interface Matcher<T, R> {
 
-    Optional<R> matches(T value);
+    Option<R> matches(T value);
 
 }

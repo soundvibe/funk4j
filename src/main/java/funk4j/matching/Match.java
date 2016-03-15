@@ -1,13 +1,13 @@
 package funk4j.matching;
 
-import java.util.Optional;
+import funk4j.adt.Option;
 
 /**
  * @author Cipolinas on 2016.03.10.
  */
 public interface Match<T, R> {
 
-    Optional<R> apply(T valueToMatch);
+    Option<R> apply(T valueToMatch);
 
     default R match(T valueToMatch) {
         return apply(valueToMatch)

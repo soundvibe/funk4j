@@ -193,4 +193,36 @@ public class OptionTest {
         assertTrue(actual.isEmpty());
     }
 
+    @Test
+    public void shouldSomeHaveEqualsAndHashcode() throws Exception {
+        final Option<String> left = some("foo");
+        final Option<String> right = some("foo");
+        final Option<String> notRight = some("bar");
+
+        assertEquals(left, right);
+        assertNotEquals(left, notRight);
+
+        assertEquals(left.hashCode(), right.hashCode());
+    }
+
+    @Test
+    public void shouldNoneHaveEqualsAndHashcode() throws Exception {
+        final Option<String> left = none();
+        final Option<String> right = none();
+        final Option<String> notRight = some("bar");
+
+        assertEquals(left, right);
+        assertNotEquals(left, notRight);
+
+        assertEquals(left.hashCode(), right.hashCode());
+    }
+
+    @Test
+    public void shouldPrintToString() throws Exception {
+        final Option<String> left = some("foo");
+        final Option<String> right = none();
+
+        assertEquals("Some(foo)", left.toString());
+        assertEquals("None", right.toString());
+    }
 }

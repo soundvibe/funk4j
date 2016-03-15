@@ -1,7 +1,8 @@
 package funk4j.matching;
 
+import funk4j.adt.Option;
+
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author Cipolinas on 2016.03.10.
@@ -15,14 +16,14 @@ public final class MatchImpl<T,R> implements Match<T,R> {
     }
 
     @Override
-    public Optional<R> apply(T valueToMatch) {
+    public Option<R> apply(T valueToMatch) {
         for (Matcher<T, R> matcher : matchers) {
-            final Optional<R> matches = matcher.matches(valueToMatch);
+            final Option<R> matches = matcher.matches(valueToMatch);
             if (matches.isPresent()) {
                 return matches;
             }
         }
-        return Optional.empty();
+        return Option.none();
     }
 
     @Override

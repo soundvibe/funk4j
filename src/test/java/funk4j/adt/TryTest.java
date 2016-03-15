@@ -8,7 +8,12 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.*;
 
 /**
@@ -373,6 +378,12 @@ public class TryTest {
         assertEquals("Error: foo", actual);
     }
 
+    @Test(expected = RuntimeException.class)
+    public void shouldThrowMappedRuntimeException() throws Exception {
+        Try.failure(new IllegalArgumentException("e"))
+                .orElseRuntimeThrow(RuntimeException::new);
+    }
+
     @Test
     public void shouldGetSuccessInOrElse() throws Exception {
         String actual = Try.from("foo")
@@ -395,6 +406,24 @@ public class TryTest {
     @Test(expected = RuntimeException.class)
     public void shouldRunAsUncheckedWithLambda() {
         Try.doUnchecked(this::throwsSomeException);
+    }
+
+    @Test
+    public void shouldComposeWithStreams() throws Exception {
+        final List<String> list = Stream.<Try<String>>of(Try.from("foo"), Try.failure(new RuntimeException("error")))
+                .flatMap(Try::toStream)
+                .collect(toList());
+
+        assertEquals(singletonList("foo"), list);
+    }
+
+    @Test
+    public void shouldCallConsumerInCaseOfFailure() throws Exception {
+        AtomicReference<Throwable> exception = new AtomicReference<>();
+        Try.failure(new RuntimeException("error"))
+                .ifFailure(exception::set);
+
+        assertEquals(RuntimeException.class, exception.get().getClass());
     }
 
     private void throwsSomeException() throws IllegalAccessException {
