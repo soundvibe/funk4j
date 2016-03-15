@@ -19,6 +19,7 @@ public class MatchErrorTest {
         assertEquals(left.hashCode(), right.hashCode());
         assertNotEquals(left, notRight);
         assertNotEquals(left, "foo");
+        assertNotEquals(left, null);
     }
 
     @Test

@@ -94,6 +94,15 @@ public class MatchersTest {
                 .match(Try.success("foo"));
     }
 
+    @Test(expected = MatchError.class)
+    public void shouldNotMatchAndExtractFailureOfTry() throws Exception {
+        final RuntimeException exception = new RuntimeException("foo");
+        new Pattern<Try<String>>()
+                .when(tryFailure(eq(exception), s -> "got " + s.getMessage()))
+                .match(Try.failure(new RuntimeException("error")));
+    }
+
+
     @Test
     public void shouldMatchOneCaseWhenEq() throws Exception {
         final String actual = new Pattern<String>()
@@ -266,6 +275,14 @@ public class MatchersTest {
         new Pattern<List<String>>()
                 .when(nil(() -> "nil"))
                 .match(Collections.singletonList("foo"));
+    }
+
+    @Test
+    public void shouldMatchNilListWhenMatchForNull() throws Exception {
+        final String actual = new Pattern<List<String>>()
+                .when(nil(() -> "nil"))
+                .match(null);
+        assertEquals("nil", actual);
     }
 
     @Test

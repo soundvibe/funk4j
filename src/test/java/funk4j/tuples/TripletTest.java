@@ -55,6 +55,8 @@ public class TripletTest {
         assertEquals(left, right);
         assertEquals(left.hashCode(), right.hashCode());
         assertNotEquals(left, firstNull);
+        assertNotEquals(left, null);
+        assertNotEquals(left, "foo");
         assertNotEquals(left, secondNull);
         assertNotEquals(left, thirdNull);
         assertNotEquals(left.hashCode(), notRight.hashCode());

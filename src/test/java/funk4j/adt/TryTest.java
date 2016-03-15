@@ -472,6 +472,42 @@ public class TryTest {
         assertNotEquals(left.hashCode(), notRight.hashCode());
     }
 
+    @Test
+    public void shouldBeFailureWhenPeekConsumerThrows() throws Exception {
+        assertTrue(Try.success("foo")
+                .peek(s -> {throw new RuntimeException(s);})
+                .isFailure());
+    }
+
+    @Test
+    public void shouldSuccessForeach() throws Exception {
+        AtomicReference<String> val = new AtomicReference<>();
+        Try.success("foo")
+                .foreach(val::set);
+        assertEquals("foo", val.get());
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void shouldThrowWhenGetFailureFromSuccess() throws Exception {
+        Try.success("foo").getFailure();
+    }
+
+    @Test
+    public void shouldDoNothingWhenOrElse() throws Throwable {
+        final Try<String> success = Try.success("foo");
+        success.orElse(throwable -> {fail(); return "s";});
+        assertEquals("foo", success.orElse("error"));
+        assertEquals("foo", success.orElseRuntimeThrow());
+        assertEquals("foo", success.orElseThrow(RuntimeException::new));
+        success.orElseThrow();
+        assertEquals("foo", success.orElseRuntimeThrow(RuntimeException::new));
+    }
+
+    @Test
+    public void shouldDoNothingWhenIsSuccessAndIfFailure() throws Exception {
+        assertEquals("foo", Try.success("foo").ifFailure(throwable -> fail()).get());
+    }
+
     private void throwsSomeException() throws IllegalAccessException {
         throw new IllegalAccessException("haha");
     }

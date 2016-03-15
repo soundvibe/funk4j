@@ -217,6 +217,7 @@ public class OptionTest {
         assertEquals(left, right);
         assertEquals(left, left);
         assertNotEquals(left, notRight);
+        assertTrue(left.equals(left));
 
         assertEquals(left.hashCode(), right.hashCode());
     }

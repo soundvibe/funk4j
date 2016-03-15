@@ -29,6 +29,8 @@ public class LazyTest {
         Lazy<Integer> lazyOne = Lazy.of(() -> 1);
         Lazy<Integer> lazyTwo = Lazy.of(() -> 1);
         assertTrue(lazyOne.equals(lazyTwo));
+
+        assertEquals(lazyOne, lazyOne);
     }
 
     @Test
