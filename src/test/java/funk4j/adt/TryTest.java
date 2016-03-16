@@ -424,13 +424,22 @@ public class TryTest {
 
     @Test
     public void shouldNotBeCheckedWhenUsingUnchecked() throws Exception {
-        int number = 0;
-        String actual = Try.unchecked(() -> {
-            if (number > 0) {
-                throw new IOException("Error");
-            } else return "foo";
-        });
+        String actual = Try.unchecked(() -> "foo");
         assertEquals("foo", actual);
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void shouldThrowRuntimeExceptionWhenSupplierThrowsWhenUsingUnchecked() throws Exception {
+        Try.unchecked(() -> {
+            throw new IOException("Error");
+        });
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void shouldThrowRuntimeExceptionWhenSupplierThrowsWhenUsingDoUnchecked() throws Exception {
+        Try.doUnchecked(() -> {
+            throw new IOException("Error");
+        });
     }
 
     @Test

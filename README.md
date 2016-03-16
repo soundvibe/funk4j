@@ -48,13 +48,11 @@ public void shouldReuseMatcher() throws Exception {
 
     final Match<String, String> matcher = new Pattern<String>()
             .when(eq("foo", s -> "got: " + s))
-            .when(eq("bar", bar -> "got" + bar))
+            .when(eq("bar", s -> "got: " + s))
             ;
 
-    assertEquals("gotbar", matcher.match("bar"));
+    assertEquals("got: bar", matcher.match("bar"));
     assertEquals("got: foo", matcher.match("foo"));
-}
-
 }
 ```
 
