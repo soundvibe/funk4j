@@ -76,6 +76,42 @@ public class TryTest {
     }
 
     @Test
+    public void shouldBeFailureWhenRecoverFunctionThrows() throws Exception {
+        assertEquals(IllegalStateException.class, Try.failure(new IllegalArgumentException("a"))
+                .recover(e -> {throw new IllegalStateException("b");})
+                .getFailure().getClass());
+    }
+
+    @Test
+    public void shouldBeFailureWhenRecoverWithFunctionThrows() throws Exception {
+        assertEquals(IllegalStateException.class, Try.failure(new IllegalArgumentException("a"))
+                .recoverWith(e -> {throw new IllegalStateException("b");})
+                .getFailure().getClass());
+    }
+
+    @Test
+    public void shouldBeFailureWhenTransformFunctionThrows() throws Exception {
+        assertEquals(IllegalStateException.class, Try.failure(new IllegalArgumentException("a"))
+                .transform(Try::from, e -> {throw new IllegalStateException("b");})
+                .getFailure().getClass());
+    }
+
+    @Test
+    public void shouldBeFailureWhenMapAnyFunctionThrows() throws Exception {
+        assertEquals(IllegalStateException.class, Try.failure(new IllegalArgumentException("a"))
+                .mapAny(Try::from, e -> {throw new IllegalStateException("b");})
+                .getFailure().getClass());
+    }
+
+    @Test
+    public void shouldDoNothingWhenCastingFailure() throws Exception {
+        assertEquals(IllegalStateException.class, Try.failure(new IllegalStateException())
+                .cast(String.class)
+                .map(s -> s)
+                .getFailure().getClass());
+    }
+
+    @Test
     public void whenFlatteningReturnCorrectValue() throws Exception {
         String actual = Try.from(Try.from("foo"))
                 .flatten()
@@ -130,6 +166,26 @@ public class TryTest {
                 .getFailure();
 
         assertEquals(RuntimeException.class, error2.getClass());
+    }
+
+    @Test
+    public void shouldReturnFailureWhenFilterThrows() throws Exception {
+        assertEquals(RuntimeException.class, Try.success("foo")
+                .filter(s -> { throw new RuntimeException("error");}, s -> new IllegalArgumentException(s))
+                .getFailure().getClass());
+    }
+
+    @Test
+    public void shouldRecoverWithDoNothingWhenSuccess() throws Exception {
+        assertEquals("foo", Try.success("foo")
+                .recoverWith(throwable -> Try.success("recovered"))
+                .get());
+    }
+
+    @Test
+    public void shouldOrElseDoNothingWhenSuccess() throws Exception {
+        assertEquals("foo", Try.success("foo")
+                .orElse(() -> "orElse"));
     }
 
     @Test
