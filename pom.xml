@@ -6,7 +6,7 @@
 
     <groupId>net.soundvibe</groupId>
     <artifactId>funk4j</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
     <name>funk4j</name>
     <description>funk(c)tional programming for Java >= 8</description>
@@ -18,6 +18,13 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+
+    <scm>
+        <connection>scm:git:https://github.com/soundvibe/funk4j.git</connection>
+        <developerConnection>scm:git:https://github.com/soundvibe/funk4j.git</developerConnection>
+        <url>https://github.com/soundvibe/funk4j.git</url>
+        <tag>HEAD</tag>
+    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
