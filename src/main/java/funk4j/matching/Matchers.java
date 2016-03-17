@@ -119,6 +119,10 @@ public interface Matchers {
                 .map(func::apply);
     }
 
+    static <T1,T2,R> Matcher<Pair<T1,T2>, R> pair(Func2<T1, T2, R> func) {
+        return pair(any(), any(), func::apply);
+    }
+
     static <T1, T2, U1, U2, R> Matcher<Pair<T1,T2>,R> pair(Matcher<T1, U1> matcher1, Matcher<T2, U2> matcher2,
                                                            Func2<U1, U2, R> func) {
         return val -> Option.of(val)

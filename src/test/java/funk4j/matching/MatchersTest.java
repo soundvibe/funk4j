@@ -318,6 +318,15 @@ public class MatchersTest {
     }
 
     @Test
+    public void shouldExtractPairWhenAny_SimpleForm() throws Exception {
+        final String actual = new Pattern<Pair<String, Integer>>()
+                .when(pair((name, value) -> name + "bar" + value))
+                .match(Pair.of("foo", 100));
+
+        assertEquals("foobar100", actual);
+    }
+
+    @Test
     public void shouldExtractPairWhenAny() throws Exception {
         final String actual = new Pattern<Pair<String, Integer>>()
                 .when(pair(__(), __(), (_1, _2) -> _1 + "bar" + _2))

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static funk4j.tuples.Pair.pair;
 import static org.junit.Assert.*;
 
 /**
@@ -16,6 +17,13 @@ public class PairTest {
     @Test
     public void isAssigned_With_Correct_Values() throws Exception {
         Pair<String, Integer> pair = Pair.of("foo", 1);
+        assertEquals("foo", pair._1);
+        assertEquals(1, (int) pair._2);
+    }
+
+    @Test
+    public void isAssigned_With_Correct_ValuesWhenPairIsCalled() throws Exception {
+        Pair<String, Integer> pair = pair("foo", 1);
         assertEquals("foo", pair._1);
         assertEquals(1, (int) pair._2);
     }

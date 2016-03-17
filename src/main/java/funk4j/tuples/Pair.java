@@ -25,6 +25,10 @@ public final class Pair<T1, T2> implements Serializable {
         return new Pair<>(val1, val2);
     }
 
+    public static <T1, T2> Pair<T1, T2> pair(final T1 val1, final T2 val2) {
+        return of(val1, val2);
+    }
+
     public Option<T1> maybe1() {
         return Option.of(_1);
     }

@@ -27,6 +27,10 @@ public final class Triplet<T1, T2, T3> implements Serializable {
         return new Triplet<>(val1, val2, val3);
     }
 
+    public static <T1, T2, T3> Triplet<T1, T2, T3> triplet(final T1 val1, final T2 val2, final T3 val3) {
+        return of(val1, val2, val3);
+    }
+
     public Option<T1> maybe1() {
         return Option.of(_1);
     }

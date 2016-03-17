@@ -6,7 +6,7 @@
 
 funk(c)tional programming for Java >= 8.
 
-## Pattern Matching
+## Type safe structural pattern matching
 
 ```java
 @Test
@@ -53,6 +53,25 @@ public void shouldReuseMatcher() throws Exception {
 
     assertEquals("got: bar", matcher.match("bar"));
     assertEquals("got: foo", matcher.match("foo"));
+}
+
+@Test
+public void shouldExtractPairWhenKeyEq() throws Exception {
+    final String actual = new Pattern<Pair<String, Integer>>()
+            .when(pair(eq("foo"), any(), (key, value) -> key + "bar"))
+            .match(Pair.of("foo", 100));
+
+    assertEquals("foobar", actual);
+}
+
+@Test
+public void shouldMatchJdkMapWithKey() throws Exception {
+    Map<String, String> map = new HashMap<>(1);
+    map.put("foo", "bar");
+    final String actual = new Pattern<Map<String, String>>()
+            .when(map("foo", any(), (key, value) -> key + value))
+            .match(map);
+    assertEquals("foobar", actual);
 }
 ```
 
@@ -106,7 +125,7 @@ public void whenCalledMultipleTimes_ReturnCachedResult() throws Exception {
 
 ```
 
-And more...
+And many more (memoization, expiring cache, etc.)...
 
 ## Binaries
 
