@@ -172,6 +172,36 @@ public class MatchersTest {
         assertEquals("got: bar", actual);
     }
 
+    @Test(expected = MatchError.class)
+    public void shouldNotMatchWhenIsGreaterThen5() throws Exception {
+        new Pattern<Integer>()
+                .when(greaterThan(5))
+                .match(5);
+    }
+
+    @Test
+    public void shouldMatchWhenIsLessThen5() throws Exception {
+        final Integer actual = new Pattern<Integer>()
+                .when(lessThan(5))
+                .match(4);
+        assertEquals(4, actual.intValue());
+    }
+
+    @Test(expected = MatchError.class)
+    public void shouldNotMatchWhenIsLessThen5() throws Exception {
+        new Pattern<Integer>()
+                .when(lessThan(5))
+                .match(5);
+    }
+
+    @Test
+    public void shouldMatchWhenIsGreaterThen5() throws Exception {
+        final Integer actual = new Pattern<Integer>()
+                .when(greaterThan(5))
+                .match(6);
+        assertEquals(6, actual.intValue());
+    }
+
     @Test
     public void shouldMatchTwoCasesWithSubTypes() throws Exception {
         Foo foo = new FooExt("bar", 18);
@@ -259,143 +289,6 @@ public class MatchersTest {
                 .match(Option.of("foo"));
 
         assertEquals("got: some foo", actual);
-    }
-
-    @Test
-    public void shouldMatchNilList() throws Exception {
-        final String actual = new Pattern<List<String>>()
-                .when(nil(() -> "nil"))
-                .match(Collections.emptyList());
-
-        assertEquals("nil", actual);
-    }
-
-    @Test(expected = MatchError.class)
-    public void shouldNotMatchNilList() throws Exception {
-        new Pattern<List<String>>()
-                .when(nil(() -> "nil"))
-                .match(Collections.singletonList("foo"));
-    }
-
-    @Test
-    public void shouldMatchNilListWhenMatchForNull() throws Exception {
-        final String actual = new Pattern<List<String>>()
-                .when(nil(() -> "nil"))
-                .match(null);
-        assertEquals("nil", actual);
-    }
-
-    @Test
-    public void shouldMatchHeadTailOfList() throws Exception {
-        final String actual = new Pattern<List<String>>()
-                .when(nil(() -> "nil"))
-                .when(headTail((x, xs) -> "head: " + x + " tail: " + xs))
-                .match(asList("one", "two", "three"));
-
-        assertEquals("head: one tail: [two, three]", actual);
-    }
-
-    @Test(expected = MatchError.class)
-    public void shouldNotMatchHeadTailOfList() throws Exception {
-        new Pattern<List<String>>()
-                .when(headTail((x, xs) -> "head: " + x + " tail: " + xs))
-                .match(Collections.emptyList());
-    }
-
-    @Test
-    public void shouldMatch2HeadsAndTailOfList() throws Exception {
-        final String actual = new Pattern<List<String>>()
-                .when(nil(() -> "nil"))
-                .when(headTail((x1, x2, xs) -> "head: " + x1 + x2 + " tail: " + xs))
-                .match(asList("one", "two", "three"));
-
-        assertEquals("head: onetwo tail: [three]", actual);
-    }
-
-    @Test(expected = MatchError.class)
-    public void shouldNotMatch2HeadsTailOfList() throws Exception {
-        new Pattern<List<String>>()
-                .when(headTail((x1, x2, xs) -> "head: " + x1 + x2 + " tail: " + xs))
-                .match(Collections.emptyList());
-    }
-
-    @Test
-    public void shouldMatch3HeadsAndTailOfList() throws Exception {
-        final String actual = new Pattern<List<String>>()
-                .when(nil(() -> "nil"))
-                .when(headTail((x1, x2, x3, xs) -> x1 + x2 + x3 + " tail: " + xs))
-                .match(asList("one", "two", "three", "four"));
-
-        assertEquals("onetwothree tail: [four]", actual);
-    }
-
-    @Test(expected = MatchError.class)
-    public void shouldNotMatch3HeadsTailOfList() throws Exception {
-        new Pattern<List<String>>()
-                .when(headTail((x1, x2, x3, xs) -> x1 + x2 + x3 + " tail: " + xs))
-                .match(Collections.emptyList());
-    }
-
-    @Test(expected = MatchError.class)
-    public void shouldNotMatch3HeadsAndTailOfList() throws Exception {
-        final String actual = new Pattern<List<String>>()
-                .when(nil(() -> "nil"))
-                .when(headTail((x1, x2, x3, xs) -> x1 + x2 + x3 + " tail: " + xs))
-                .match(asList("one", "two"));
-
-        assertEquals("onetwothree tail: [four]", actual);
-    }
-
-    @Test
-    public void shouldMatch4HeadsAndTailOfList() throws Exception {
-        final String actual = new Pattern<List<String>>()
-                .when(nil(() -> "nil"))
-                .when(headTail((x1, x2, x3, x4, xs) -> x1 + x2 + x3 + x4 + " tail: " + xs))
-                .match(asList("one", "two", "three", "four"));
-
-        assertEquals("onetwothreefour tail: []", actual);
-    }
-
-    @Test(expected = MatchError.class)
-    public void shouldNotMatch4HeadsTailOfList() throws Exception {
-        new Pattern<List<String>>()
-                .when(headTail((x1, x2, x3, x4, xs) -> x1 + x2 + x3 + x4 + " tail: " + xs))
-                .match(Collections.emptyList());
-    }
-
-
-    @Test
-    public void shouldMatchHeadOfList() throws Exception {
-        final String actual = new Pattern<List<String>>()
-                .when(nil(() -> "nil"))
-                .when(head(x -> "head: " + x))
-                .match(asList("one", "two", "three"));
-
-        assertEquals("head: one", actual);
-    }
-
-    @Test(expected = MatchError.class)
-    public void shouldNotMatchHeadOfList() throws Exception {
-        new Pattern<List<String>>()
-                .when(head(x -> "head: " + x))
-                .match(Collections.emptyList());
-    }
-
-    @Test
-    public void shouldMatchTailOfList() throws Exception {
-        final String actual = new Pattern<List<String>>()
-                .when(nil(() -> "nil"))
-                .when(tail(xs -> "tail: " + xs))
-                .match(asList("one", "two", "three"));
-
-        assertEquals("tail: [two, three]", actual);
-    }
-
-    @Test(expected = MatchError.class)
-    public void shouldNotMatchTailOfList() throws Exception {
-        new Pattern<List<String>>()
-                .when(tail(xs -> "tail: " + xs))
-                .match(Collections.emptyList());
     }
 
     @Test

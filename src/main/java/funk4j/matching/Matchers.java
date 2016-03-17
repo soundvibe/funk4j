@@ -4,7 +4,6 @@ import funk4j.adt.*;
 import funk4j.functions.*;
 import funk4j.tuples.Pair;
 
-import java.util.*;
 import java.util.function.Supplier;
 
 /**
@@ -28,9 +27,28 @@ public interface Matchers {
         return any(func);
     }
 
+    static <U, T extends Comparable<U>> Matcher<T,T> greaterThan(U valueToCompare) {
+        return greaterThan(valueToCompare, Func1.identity());
+    }
+
+    static <U, T extends Comparable<U>, R> Matcher<T,R> greaterThan(U valueToCompare, Func1<T, R> func) {
+        return value -> Option.of(value)
+                .filter(t -> t.compareTo(valueToCompare) > 0)
+                .map(func::apply);
+    }
+
+    static <U, T extends Comparable<U>> Matcher<T,T> lessThan(U valueToCompare) {
+        return lessThan(valueToCompare, Func1.identity());
+    }
+
+    static <U, T extends Comparable<U>, R> Matcher<T,R> lessThan(U valueToCompare, Func1<T, R> func) {
+        return value -> Option.of(value)
+                .filter(t -> t.compareTo(valueToCompare) < 0)
+                .map(func::apply);
+    }
+
     static <T,U> Matcher<T,U> eq(U value) {
-        return val -> Option.of(value)
-                .filter(t -> t.equals(val));
+        return eq(value, Func1.identity());
     }
 
     static <T,R,U> Matcher<T,R> eq(U value, Func1<U, R> func) {
@@ -99,48 +117,6 @@ public interface Matchers {
         return val -> Option.of(val)
                 .filter(s -> s.matches(regex))
                 .map(func::apply);
-    }
-
-    static <T,R, U extends Collection<T>> Matcher<U,R> nil(Supplier<R> supplier) {
-        return val -> val == null ? Option.of(supplier.get()) : Option.of(val)
-                .filter(Collection::isEmpty)
-                .map(ts -> supplier.get());
-    }
-
-    static <T,R, U extends Collection<T>> Matcher<U,R> head(Func1<T, R> func) {
-        return val -> Option.of(val)
-                .filter(ts -> !ts.isEmpty())
-                .map(ts -> func.apply(Lists.head(ts)));
-    }
-
-    static <T,R, U extends Collection<T>> Matcher<U,R> tail(Func1<Collection<T>, R> func) {
-        return val -> Option.of(val)
-                .filter(ts -> ts.size() > 1)
-                .map(ts -> func.apply(Lists.tail(ts)));
-    }
-
-    static <T,R, U extends Collection<T>> Matcher<U,R> headTail(Func2<T, Collection<T>, R> func2) {
-        return val -> Option.of(val)
-                .filter(ts -> !ts.isEmpty())
-                .map(ts -> func2.apply(Lists.head(ts), Lists.tail(ts)));
-    }
-
-    static <T,R, U extends Collection<T>> Matcher<U,R> headTail(Func3<T, T, Collection<T>, R> func3) {
-        return val -> Option.of(val)
-                .filter(ts -> ts.size() > 1)
-                .map(ts -> func3.apply(Lists.head(ts), Lists.head(ts, 1), Lists.tail(ts, 2)));
-    }
-
-    static <T,R, U extends Collection<T>> Matcher<U,R> headTail(Func4<T, T, T, Collection<T>, R> func4) {
-        return val -> Option.of(val)
-                .filter(ts -> ts.size() > 2)
-                .map(ts -> func4.apply(Lists.head(ts), Lists.head(ts, 1), Lists.head(ts, 2), Lists.tail(ts, 3)));
-    }
-
-    static <T,R, U extends Collection<T>> Matcher<U,R> headTail(Func5<T, T, T, T, Collection<T>, R> func5) {
-        return val -> Option.of(val)
-                .filter(ts -> ts.size() > 3)
-                .map(ts -> func5.apply(Lists.head(ts), Lists.head(ts, 1), Lists.head(ts, 2), Lists.head(ts, 3), Lists.tail(ts, 4)));
     }
 
     static <T1, T2, U1, U2, R> Matcher<Pair<T1,T2>,R> pair(Matcher<T1, U1> matcher1, Matcher<T2, U2> matcher2,
