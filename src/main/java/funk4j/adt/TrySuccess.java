@@ -8,8 +8,6 @@ import java.util.*;
 import java.util.function.*;
 
 import static funk4j.matching.Matchers.*;
-import static funk4j.matching.Matchers.tryFailure;
-import static funk4j.matching.Matchers.trySuccess;
 
 /**
  * @author OZY on 2015.08.15.
@@ -54,7 +52,7 @@ public final class TrySuccess<T> implements Try<T>, Serializable {
         return filter(predicate, t -> failureSupplier.get());
     }
 
-    public static final Match<Object, Boolean> filterPredicateMatcher = new Pattern<>()
+    private static final Match<Object, Boolean> filterPredicateMatcher = new Pattern<>()
             .when(instanceOf(Boolean.class, Func1.identity()))
             .when(instanceOf(Collection.class, list -> !list.isEmpty()))
             .when(instanceOf(Optional.class, Optional::isPresent))

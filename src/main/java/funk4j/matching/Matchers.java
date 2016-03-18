@@ -34,7 +34,7 @@ public interface Matchers {
     static <U, T extends Comparable<U>, R> Matcher<T,R> greaterThan(U valueToCompare, Func1<T, R> func) {
         return value -> Option.of(value)
                 .filter(t -> t.compareTo(valueToCompare) > 0)
-                .map(func::apply);
+                .map(func);
     }
 
     static <U, T extends Comparable<U>> Matcher<T,T> lessThan(U valueToCompare) {
@@ -44,7 +44,7 @@ public interface Matchers {
     static <U, T extends Comparable<U>, R> Matcher<T,R> lessThan(U valueToCompare, Func1<T, R> func) {
         return value -> Option.of(value)
                 .filter(t -> t.compareTo(valueToCompare) < 0)
-                .map(func::apply);
+                .map(func);
     }
 
     static <T,U> Matcher<T,U> eq(U value) {
@@ -54,7 +54,7 @@ public interface Matchers {
     static <T,R,U> Matcher<T,R> eq(U value, Func1<U, R> func) {
         return val -> Option.of(value)
                 .filter(t -> t.equals(val))
-                .map(func::apply);
+                .map(func);
     }
 
     static <T,R> Matcher<T,R> isNull(Supplier<R> supplier) {
@@ -69,14 +69,14 @@ public interface Matchers {
         return val -> Option.of(val)
                 .filter(t -> aClass.equals(t.getClass()))
                 .map(aClass::cast)
-                .map(func::apply);
+                .map(func);
     }
 
     static <T,U extends T,R> Matcher<T,R> instanceOf(Class<U> aClass, Func1<U, R> func) {
         return val -> Option.of(val)
                 .filter(aClass::isInstance)
                 .map(aClass::cast)
-                .map(func::apply);
+                .map(func);
     }
 
     static <T,R> Matcher<Option<T>,R> none(Supplier<R> supplier) {
@@ -84,23 +84,23 @@ public interface Matchers {
     }
 
     static <T,R> Matcher<Option<T>,R> some(Func1<T, R> func) {
-        return val -> val.map(func::apply);
+        return val -> val.map(func);
     }
 
     static <T,U,R> Matcher<Option<T>,R> some(Matcher<T, U> matcher, Func1<U, R> func) {
         return val -> val
                 .flatMap(matcher::matches)
-                .map(func::apply);
+                .map(func);
     }
 
     static <T,R> Matcher<Try<T>,R> trySuccess(Func1<T, R> func) {
-        return val -> val.map(func::apply).toOption();
+        return val -> val.map(func).toOption();
     }
 
     static <T,U,R> Matcher<Try<T>,R> trySuccess(Matcher<T, U> matcher, Func1<U, R> func) {
         return val -> val
                 .flatMap(t -> Try.from(matcher.matches(t)))
-                .map(func::apply)
+                .map(func)
                 .toOption();
     }
 
@@ -116,11 +116,11 @@ public interface Matchers {
     static <R> Matcher<String,R> regex(String regex, Func1<String, R> func) {
         return val -> Option.of(val)
                 .filter(s -> s.matches(regex))
-                .map(func::apply);
+                .map(func);
     }
 
     static <T1,T2,R> Matcher<Pair<T1,T2>, R> pair(Func2<T1, T2, R> func) {
-        return pair(any(), any(), func::apply);
+        return pair(any(), any(), func);
     }
 
     static <T1, T2, U1, U2, R> Matcher<Pair<T1,T2>,R> pair(Matcher<T1, U1> matcher1, Matcher<T2, U2> matcher2,

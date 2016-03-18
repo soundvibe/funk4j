@@ -7,7 +7,6 @@ import org.junit.Test;
 import java.util.*;
 
 import static funk4j.matching.Matchers.*;
-import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 
 /**

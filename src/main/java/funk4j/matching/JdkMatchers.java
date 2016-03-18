@@ -22,7 +22,7 @@ public interface JdkMatchers {
     static <T,U,R> Matcher<Optional<T>,R> some(Matcher<T, U> matcher, Func1<U, R> func) {
         return val -> Option.from(val)
                 .flatMap(matcher::matches)
-                .map(func::apply);
+                .map(func);
     }
 
     static <T,R, U extends Collection<T>> Matcher<U,R> nil(Supplier<R> supplier) {

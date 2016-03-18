@@ -7,9 +7,7 @@ import org.junit.rules.ExpectedException;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.*;
 import java.util.stream.Stream;
 
 import static java.util.Collections.singletonList;
@@ -338,7 +336,7 @@ public class TryTest {
 
     @Test(expected = RuntimeException.class)
     public void whenIsFailureOrElseThrowMapsToRuntimeException() throws Exception {
-        Integer actual = Try.from(() -> 5 / 0)
+        Try.from(() -> 5 / 0)
                 .orElseThrow(RuntimeException::new);
     }
 

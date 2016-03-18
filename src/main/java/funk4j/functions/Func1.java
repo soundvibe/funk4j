@@ -30,8 +30,6 @@ public interface Func1<T, R> {
      * @return a composed function that first applies the {@code before}
      * function and then applies this function
      * @throws NullPointerException if before is null
-     *
-     * @see #andThen(Function)
      */
     default <V> Func1<V, R> compose(Func1<? super V, ? extends T> before) {
         Objects.requireNonNull(before);
@@ -50,8 +48,6 @@ public interface Func1<T, R> {
      * @return a composed function that first applies this function and then
      * applies the {@code after} function
      * @throws NullPointerException if after is null
-     *
-     * @see #compose(Function)
      */
     default <V> Func1<T, V> andThen(Func1<? super R, ? extends V> after) {
         Objects.requireNonNull(after);
