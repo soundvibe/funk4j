@@ -5,6 +5,7 @@ import funk4j.functions.*;
 import funk4j.tuples.Pair;
 
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 /**
  * @author Cipolinas on 2016.03.10.
@@ -49,6 +50,26 @@ public interface Matchers {
 
     static <T,U> Matcher<T,U> eq(U value) {
         return eq(value, Func1.identity());
+    }
+
+    @SafeVarargs
+    static <T> Matcher<T,T> inEq(T... values) {
+        return inEq(Stream.of(values), Func1.identity());
+    }
+
+    static <T, R> Matcher<T,R> inEq(Stream<T> values, Func1<T,R> func) {
+        return value -> values
+                .anyMatch(u -> eq(u).matches(value).isPresent()) ? Option.some(func.apply(value)) : Option.none();
+    }
+
+    @SafeVarargs
+    static <T> Matcher<T,T> in(Matcher<T, T>... matchers) {
+        return in(Stream.of(matchers), Func1.identity());
+    }
+
+    static <T, R> Matcher<T,R> in(Stream<Matcher<T, T>> matchers, Func1<T,R> func) {
+        return value -> matchers
+                .anyMatch(matcher -> matcher.matches(value).isPresent()) ? Option.some(func.apply(value)) : Option.none();
     }
 
     static <T,R,U> Matcher<T,R> eq(U value, Func1<U, R> func) {

@@ -7,11 +7,11 @@ import java.util.List;
 /**
  * @author Cipolinas on 2016.03.10.
  */
-public final class MatchImpl<T,R> implements Match<T,R> {
+final class MatchImpl<T,R> implements Match<T,R> {
 
     private final List<Matcher<T,R>> matchers;
 
-    public MatchImpl(List<Matcher<T, R>> matchers) {
+    MatchImpl(List<Matcher<T, R>> matchers) {
         this.matchers = matchers;
     }
 
