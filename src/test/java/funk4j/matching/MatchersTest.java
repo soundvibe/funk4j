@@ -7,6 +7,7 @@ import org.junit.Test;
 import java.util.*;
 
 import static funk4j.matching.Matchers.*;
+import static funk4j.matching.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -85,11 +86,19 @@ public class MatchersTest {
         assertEquals("got foo", actual);
     }
 
+    @Test
+    public void shouldExtractFailureOfTryWhenMatchedExceptionClass() throws Exception {
+         final String actual = new Pattern<Try<String>>()
+                .when(tryFailure(instanceOf(RuntimeException.class), s -> "got " + s.getMessage()))
+                .match(Try.failure(new RuntimeException("foo")));
+
+        assertEquals("got foo", actual);
+    }
+
     @Test(expected = MatchError.class)
     public void shouldNotExtractFailureOfTry() throws Exception {
-        final RuntimeException exception = new RuntimeException("foo");
         new Pattern<Try<String>>()
-                .when(tryFailure(eq(exception), s -> "got " + s.getMessage()))
+                .when(tryFailure(classOf(RuntimeException.class), s -> "got " + s.getMessage()))
                 .match(Try.success("foo"));
     }
 
@@ -231,7 +240,7 @@ public class MatchersTest {
         assertEquals(55, i);
     }
 
-    public static int fibonacciRecursion(int val) {
+    private static int fibonacciRecursion(int val) {
         return new Pattern<Integer>()
                 .when(eq(1, i -> 1))
                 .when(eq(2, i -> 1))
@@ -355,7 +364,7 @@ public class MatchersTest {
         }
     }
 
-    class FooExt extends Foo {
+    private class FooExt extends Foo {
 
         final Integer age;
 

@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Cipolinas on 2016.03.10.
  */
-public interface Lists {
+interface Lists {
 
     static <T> List<T> of(T item) {
         return add(new ArrayList<T>(), item);

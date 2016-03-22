@@ -9,13 +9,13 @@ import java.util.function.*;
 /**
  * @author OZY on 2015.10.12.
  */
-public final class Some<T> implements Option<T>, Serializable {
+final class Some<T> implements Option<T>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private final T value;
 
-    public Some(T value) {
+    Some(T value) {
         this.value = value;
     }
 

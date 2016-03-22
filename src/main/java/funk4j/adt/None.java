@@ -9,7 +9,7 @@ import java.util.function.*;
 /**
  * @author OZY on 2015.10.12.
  */
-public final class None<T> implements Option<T>, Serializable {
+final class None<T> implements Option<T>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -19,7 +19,7 @@ public final class None<T> implements Option<T>, Serializable {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> None<T> instance() {
+    static <T> None<T> instance() {
         return (None<T>) INSTANCE;
     }
 

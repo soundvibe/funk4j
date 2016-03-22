@@ -65,11 +65,19 @@ public interface Matchers {
         return value -> value != null ? Option.of(func.apply(value)) : Option.none();
     }
 
+    static <T> Matcher<T,T> classOf(Class<T> aClass) {
+        return classOf(aClass, Func1.identity());
+    }
+
     static <T,U extends T,R> Matcher<T,R> classOf(Class<U> aClass, Func1<U, R> func) {
         return val -> Option.of(val)
                 .filter(t -> aClass.equals(t.getClass()))
                 .map(aClass::cast)
                 .map(func);
+    }
+
+    static <T> Matcher<T,T> instanceOf(Class<T> aClass) {
+        return instanceOf(aClass, Func1.identity());
     }
 
     static <T,U extends T,R> Matcher<T,R> instanceOf(Class<U> aClass, Func1<U, R> func) {
@@ -108,9 +116,10 @@ public interface Matchers {
         return val -> val.isFailure() ? Option.of(func.apply(val.getFailure())) : Option.none();
     }
 
-    static <T,R> Matcher<Try<T>,R> tryFailure(Matcher<Throwable, Throwable> matcher, Func1<Throwable, R> func) {
-        return val -> val.isFailure() && matcher.matches(val.getFailure()).isPresent() ?
-                Option.of(func.apply(val.getFailure())) : Option.none();
+    @SuppressWarnings("unchecked")
+    static <T,R, E extends Throwable> Matcher<Try<T>,R> tryFailure(Matcher<E, E> matcher, Func1<E, R> func) {
+        return val -> val.isFailure() && matcher.matches((E) val.getFailure()).isPresent() ?
+                Option.of(func.apply((E) val.getFailure())) : Option.none();
     }
 
     static <R> Matcher<String,R> regex(String regex, Func1<String, R> func) {

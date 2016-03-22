@@ -9,14 +9,14 @@ import java.util.function.*;
 /**
  * @author OZY on 2015.08.15.
  */
-public final class TryFailure<T> implements Try<T>, Serializable {
+final class TryFailure<T> implements Try<T>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private final Throwable failure;
 
     @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
-    protected TryFailure(Throwable failure) {
+    TryFailure(Throwable failure) {
         Objects.requireNonNull(failure, "Failure cannot be null");
         this.failure = failure;
     }
