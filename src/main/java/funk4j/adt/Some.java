@@ -58,6 +58,11 @@ final class Some<T> implements Option<T>, Serializable {
     }
 
     @Override
+    public Option<T> or(Supplier<Option<T>> supplier) {
+        return this;
+    }
+
+    @Override
     public T orElse(T other) {
         return value;
     }

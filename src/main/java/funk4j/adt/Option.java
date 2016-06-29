@@ -63,6 +63,8 @@ public interface Option<T>  {
 
     <U> Option<U> flatMap(Func1<? super T, Option<U>> mapper);
 
+    Option<T> or(Supplier<Option<T>> supplier);
+
     T orElse(T other);
 
     T orElseGet(Supplier<? extends T> other);

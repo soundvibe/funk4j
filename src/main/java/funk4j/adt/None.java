@@ -59,6 +59,11 @@ final class None<T> implements Option<T>, Serializable {
     }
 
     @Override
+    public Option<T> or(Supplier<Option<T>> supplier) {
+        return supplier.get();
+    }
+
+    @Override
     public T orElse(T other) {
         return other;
     }

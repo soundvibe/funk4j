@@ -242,4 +242,17 @@ public class OptionTest {
         assertEquals("Some(foo)", left.toString());
         assertEquals("None", right.toString());
     }
+
+    @Test
+    public void shouldFallbackToAnotherOption() throws Exception {
+        Option<String> none = none();
+        final Option<String> actual = none.or(() -> some("foo"));
+        assertEquals(some("foo"), actual);
+    }
+
+    @Test
+    public void shouldNotFallbackToAnotherOption() throws Exception {
+        final Option<String> actual = some("foo").or(Option::none);
+        assertEquals(some("foo"), actual);
+    }
 }
