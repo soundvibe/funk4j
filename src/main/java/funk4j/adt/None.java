@@ -3,6 +3,8 @@ package funk4j.adt;
 import funk4j.functions.*;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.*;
 
@@ -91,5 +93,10 @@ final class None<T> implements Option<T>, Serializable {
     @Override
     public String toString() {
         return "None";
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return Collections.emptyIterator();
     }
 }

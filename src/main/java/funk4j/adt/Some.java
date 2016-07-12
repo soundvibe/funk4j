@@ -3,6 +3,8 @@ package funk4j.adt;
 import funk4j.functions.Func1;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.function.*;
 
@@ -90,5 +92,10 @@ final class Some<T> implements Option<T>, Serializable {
     @Override
     public String toString() {
         return String.format("Some(%s)", value);
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return Collections.singletonList(value).iterator();
     }
 }

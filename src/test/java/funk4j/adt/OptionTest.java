@@ -61,7 +61,7 @@ public class OptionTest {
     @Test
     public void shouldEnumerate() throws Exception {
         AtomicReference<String> actual = new AtomicReference<>();
-        Option.of("foo").foreach(actual::set);
+        Option.of("foo").forEach(actual::set);
         assertEquals("foo", actual.get());
     }
 
@@ -254,5 +254,27 @@ public class OptionTest {
     public void shouldNotFallbackToAnotherOption() throws Exception {
         final Option<String> actual = some("foo").or(Option::none);
         assertEquals(some("foo"), actual);
+    }
+
+    @Test
+    public void shouldIterateThroughSome() throws Exception {
+        final Option<String> actual = some("foo");
+        int i = 0;
+        for (String item : actual) {
+            assertEquals("foo", item);
+            i++;
+        }
+        assertEquals(1, i);
+    }
+
+    @Test
+    public void shouldIterateThroughNone() throws Exception {
+        final Option<String> actual = none();
+        int i = 0;
+        for (String item : actual) {
+            System.out.println(item);
+            i++;
+        }
+        assertEquals(0, i);
     }
 }
