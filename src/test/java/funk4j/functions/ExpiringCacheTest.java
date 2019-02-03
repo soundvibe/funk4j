@@ -9,9 +9,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.Assert.*;
 
-/**
- * @author OZY on 2016.03.14.
- */
 public class ExpiringCacheTest {
 
     @Test

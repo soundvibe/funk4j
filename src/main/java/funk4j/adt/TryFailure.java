@@ -6,9 +6,6 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.function.*;
 
-/**
- * @author OZY on 2015.08.15.
- */
 final class TryFailure<T> implements Try<T>, Serializable {
 
     private static final long serialVersionUID = 1L;

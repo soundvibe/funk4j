@@ -9,9 +9,6 @@ import java.util.function.Function;
 import static funk4j.functions.Memoization.memoize;
 import static org.junit.Assert.*;
 
-/**
- * @author OZY on 2016.03.14.
- */
 public class MemoizationTest {
 
     @Test

@@ -10,9 +10,6 @@ import static funk4j.matching.Matchers.eq;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.*;
 
-/**
- * @author OZY on 2016.03.15.
- */
 public class JdkMatchersTest {
 
     @Test

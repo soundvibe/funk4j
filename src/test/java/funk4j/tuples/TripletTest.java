@@ -9,9 +9,6 @@ import java.util.Map;
 import static funk4j.tuples.Triplet.triplet;
 import static org.junit.Assert.*;
 
-/**
- * @author OZY on 2016.03.14.
- */
 public class TripletTest {
 
     @Test

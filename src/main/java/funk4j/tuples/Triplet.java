@@ -6,10 +6,6 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.function.*;
 
-/**
- * @author OZY on 2014.12.16
- */
-
 public final class Triplet<T1, T2, T3> implements Serializable, Iterable<Object> {
 
     private static final long serialVersionUID = 1L;

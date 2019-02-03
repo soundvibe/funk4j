@@ -11,9 +11,6 @@ import static funk4j.matching.Matchers.*;
 import static funk4j.matching.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
 
-/**
- * @author OZY on 2016.03.14.
- */
 public class MatchersTest {
 
     @Test

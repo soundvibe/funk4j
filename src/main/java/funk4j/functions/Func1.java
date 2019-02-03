@@ -4,9 +4,6 @@ import java.time.LocalTime;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-/**
- * @author OZY on 2015.06.12.
- */
 @FunctionalInterface
 public interface Func1<T, R> {
 

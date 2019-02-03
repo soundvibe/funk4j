@@ -6,9 +6,6 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.*;
 
-/**
- * @author OZY on 2016.02.02.
- */
 public final class ExpiringCache<T, U> implements Cache<T, U> {
 
     private static final long MILLIS_IN_ONE_DAY = TimeUnit.DAYS.toMillis(1L);

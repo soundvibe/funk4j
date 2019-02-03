@@ -6,10 +6,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
-/**
- * @author OZY on 2014.12.15
- */
-
 public interface Memoization {
 
     static <T, U> Function<T, U> memoize(final Function<T, U> function) {

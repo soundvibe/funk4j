@@ -8,9 +8,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.*;
 
-/**
- * @author OZY on 2015.10.12.
- */
 final class None<T> implements Option<T>, Serializable {
 
     private static final long serialVersionUID = 1L;

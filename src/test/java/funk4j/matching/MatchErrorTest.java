@@ -4,9 +4,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * @author OZY on 2016.03.15.
- */
 public class MatchErrorTest {
 
     @Test

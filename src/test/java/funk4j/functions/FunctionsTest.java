@@ -5,9 +5,6 @@ import org.junit.Test;
 import static funk4j.functions.Func1.f;
 import static org.junit.Assert.*;
 
-/**
- * @author Cipolinas on 2016.03.14.
- */
 public class FunctionsTest {
 
     @Test

@@ -1,9 +1,6 @@
 package funk4j.functions;
 
 
-/**
- * @author OZY on 2016.02.02.
- */
 public interface Cache<T, U> {
 
     /**

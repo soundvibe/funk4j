@@ -7,9 +7,6 @@ import funk4j.tuples.Pair;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-/**
- * @author Cipolinas on 2016.03.10.
- */
 public interface Matchers {
 
     static <T> Matcher<T,T> any() {

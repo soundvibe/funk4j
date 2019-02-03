@@ -14,9 +14,6 @@ import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.*;
 
-/**
- * @author OZY on 2016.03.14.
- */
 @SuppressWarnings({"ThrowableResultOfMethodCallIgnored", "NumericOverflow"})
 public class TryTest {
 

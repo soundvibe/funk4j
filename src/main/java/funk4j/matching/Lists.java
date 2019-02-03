@@ -5,9 +5,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * @author Cipolinas on 2016.03.10.
- */
 interface Lists {
 
     static <T> List<T> of(T item) {

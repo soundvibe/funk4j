@@ -6,9 +6,6 @@ import funk4j.functions.*;
 import java.util.*;
 import java.util.function.Supplier;
 
-/**
- * @author OZY on 2016.03.15.
- */
 public interface JdkMatchers {
 
     static <T,R> Matcher<Optional<T>,R> none(Supplier<R> supplier) {

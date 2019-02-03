@@ -7,10 +7,6 @@ import java.util.function.*;
 import java.util.stream.Stream;
 
 /**
- * @author OZY on 2015.10.12.
- */
-
-/**
  * Represents optional values. Instances of Option are either an instance of Some or the object None.
  * The most idiomatic way to use an Option instance is to treat it as a collection or monad and use map,flatMap, filter, or foreach.
  */

@@ -11,9 +11,6 @@ import static funk4j.adt.Option.*;
 import static java.util.stream.Collectors.joining;
 import static org.junit.Assert.*;
 
-/**
- * @author OZY on 2016.03.14.
- */
 public class OptionTest {
 
     @Test

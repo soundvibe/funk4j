@@ -9,9 +9,6 @@ import java.util.function.*;
 
 import static funk4j.matching.Matchers.*;
 
-/**
- * @author OZY on 2015.08.15.
- */
 final class TrySuccess<T> implements Try<T>, Serializable {
 
     private static final long serialVersionUID = 1L;

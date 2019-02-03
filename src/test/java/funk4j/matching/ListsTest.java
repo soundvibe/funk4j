@@ -6,9 +6,6 @@ import java.util.*;
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.*;
 
-/**
- * @author OZY on 2016.03.15.
- */
 public class ListsTest {
 
     @Test
