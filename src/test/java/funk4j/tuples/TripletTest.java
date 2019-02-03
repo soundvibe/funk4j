@@ -6,16 +6,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static funk4j.tuples.Triplet.triplet;
 import static org.junit.Assert.*;
 
-/**
- * @author OZY on 2016.03.14.
- */
 public class TripletTest {
 
     @Test
     public void isAssignedWithCorrectValues() throws Exception {
         Triplet<String, String, String> triplet = defaultTriplet();
+        assertEquals("foo", triplet._1);
+        assertEquals("bar", triplet._2);
+        assertEquals("1", triplet._3);
+    }
+
+    @Test
+    public void isAssignedWithCorrectValuesWhenCalledTriplet() throws Exception {
+        Triplet<String, String, String> triplet = triplet("foo", "bar", "1");
         assertEquals("foo", triplet._1);
         assertEquals("bar", triplet._2);
         assertEquals("1", triplet._3);

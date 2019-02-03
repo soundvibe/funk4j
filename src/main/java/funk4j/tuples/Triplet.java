@@ -3,13 +3,10 @@ package funk4j.tuples;
 import funk4j.adt.Option;
 
 import java.io.Serializable;
+import java.util.*;
 import java.util.function.*;
 
-/**
- * @author OZY on 2014.12.16
- */
-
-public final class Triplet<T1, T2, T3> implements Serializable {
+public final class Triplet<T1, T2, T3> implements Serializable, Iterable<Object> {
 
     private static final long serialVersionUID = 1L;
 
@@ -25,6 +22,10 @@ public final class Triplet<T1, T2, T3> implements Serializable {
 
     public static <T1, T2, T3> Triplet<T1, T2, T3> of(final T1 val1, final T2 val2, final T3 val3) {
         return new Triplet<>(val1, val2, val3);
+    }
+
+    public static <T1, T2, T3> Triplet<T1, T2, T3> triplet(final T1 val1, final T2 val2, final T3 val3) {
+        return of(val1, val2, val3);
     }
 
     public Option<T1> maybe1() {
@@ -68,9 +69,7 @@ public final class Triplet<T1, T2, T3> implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Triplet triplet = (Triplet) o;
-        return !(_1 != null ? !_1.equals(triplet._1) : triplet._1 != null) &&
-               !(_2 != null ? !_2.equals(triplet._2) : triplet._2 != null) &&
-               !(_3 != null ? !_3.equals(triplet._3) : triplet._3 != null);
+        return Objects.equals(_1, triplet._1) && Objects.equals(_2, triplet._2) && Objects.equals(_3, triplet._3);
     }
 
     @Override
@@ -88,5 +87,14 @@ public final class Triplet<T1, T2, T3> implements Serializable {
                 ", _2=" + _2 +
                 ", _3=" + _3 +
                 '}';
+    }
+
+    @Override
+    public Iterator<Object> iterator() {
+        final ArrayList<Object> objects = new ArrayList<>(3);
+        objects.add(_1);
+        objects.add(_2);
+        objects.add(_3);
+        return objects.iterator();
     }
 }

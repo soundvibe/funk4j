@@ -3,9 +3,6 @@ package funk4j.matching;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-/**
- * @author Cipolinas on 2016.03.10.
- */
 public class MatchError extends NoSuchElementException {
 
     public final Object object;

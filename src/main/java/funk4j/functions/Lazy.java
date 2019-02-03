@@ -4,9 +4,6 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-/**
- * @author OZY on 2015.05.28.
- */
 public final class Lazy<T> implements Supplier<T>, Serializable {
 
     private static final long serialVersionUID = 1L;

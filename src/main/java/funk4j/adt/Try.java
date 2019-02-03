@@ -9,10 +9,6 @@ import java.util.function.*;
 import java.util.stream.Stream;
 
 /**
- * @author OZY on 2015.08.14.
- */
-
-/**
  * The Try type represents a computation that may either result in an exception, or return a successfully computed value.
  */
 public interface Try<T> {

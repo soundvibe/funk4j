@@ -3,19 +3,18 @@ package funk4j.adt;
 import funk4j.functions.Func1;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.function.*;
 
-/**
- * @author OZY on 2015.10.12.
- */
-public final class Some<T> implements Option<T>, Serializable {
+final class Some<T> implements Option<T>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private final T value;
 
-    public Some(T value) {
+    Some(T value) {
         this.value = value;
     }
 
@@ -58,6 +57,11 @@ public final class Some<T> implements Option<T>, Serializable {
     }
 
     @Override
+    public Option<T> or(Supplier<Option<T>> supplier) {
+        return this;
+    }
+
+    @Override
     public T orElse(T other) {
         return value;
     }
@@ -85,5 +89,10 @@ public final class Some<T> implements Option<T>, Serializable {
     @Override
     public String toString() {
         return String.format("Some(%s)", value);
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return Collections.singletonList(value).iterator();
     }
 }

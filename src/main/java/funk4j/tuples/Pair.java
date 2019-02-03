@@ -3,13 +3,10 @@ package funk4j.tuples;
 import funk4j.adt.Option;
 
 import java.io.Serializable;
+import java.util.*;
 import java.util.function.*;
 
-/**
- * @author OZY on 2014.12.16
- */
-
-public final class Pair<T1, T2> implements Serializable {
+public final class Pair<T1, T2> implements Serializable, Iterable<Object> {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,6 +20,10 @@ public final class Pair<T1, T2> implements Serializable {
 
     public static <T1, T2> Pair<T1, T2> of(final T1 val1, final T2 val2) {
         return new Pair<>(val1, val2);
+    }
+
+    public static <T1, T2> Pair<T1, T2> pair(final T1 val1, final T2 val2) {
+        return of(val1, val2);
     }
 
     public Option<T1> maybe1() {
@@ -71,8 +72,7 @@ public final class Pair<T1, T2> implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Pair pair = (Pair) o;
-        return !(_1 != null ? !_1.equals(pair._1) : pair._1 != null) &&
-               !(_2 != null ? !_2.equals(pair._2) : pair._2 != null);
+        return Objects.equals(_1, pair._1) && Objects.equals(_2, pair._2);
 
     }
 
@@ -91,4 +91,11 @@ public final class Pair<T1, T2> implements Serializable {
                 '}';
     }
 
+    @Override
+    public Iterator<Object> iterator() {
+        final ArrayList<Object> objects = new ArrayList<>(2);
+        objects.add(_1);
+        objects.add(_2);
+        return objects.iterator();
+    }
 }

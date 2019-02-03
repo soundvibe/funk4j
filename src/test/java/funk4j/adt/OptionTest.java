@@ -11,9 +11,6 @@ import static funk4j.adt.Option.*;
 import static java.util.stream.Collectors.joining;
 import static org.junit.Assert.*;
 
-/**
- * @author OZY on 2016.03.14.
- */
 public class OptionTest {
 
     @Test
@@ -61,7 +58,7 @@ public class OptionTest {
     @Test
     public void shouldEnumerate() throws Exception {
         AtomicReference<String> actual = new AtomicReference<>();
-        Option.of("foo").foreach(actual::set);
+        Option.of("foo").forEach(actual::set);
         assertEquals("foo", actual.get());
     }
 
@@ -241,5 +238,40 @@ public class OptionTest {
 
         assertEquals("Some(foo)", left.toString());
         assertEquals("None", right.toString());
+    }
+
+    @Test
+    public void shouldFallbackToAnotherOption() throws Exception {
+        Option<String> none = none();
+        final Option<String> actual = none.or(() -> some("foo"));
+        assertEquals(some("foo"), actual);
+    }
+
+    @Test
+    public void shouldNotFallbackToAnotherOption() throws Exception {
+        final Option<String> actual = some("foo").or(Option::none);
+        assertEquals(some("foo"), actual);
+    }
+
+    @Test
+    public void shouldIterateThroughSome() throws Exception {
+        final Option<String> actual = some("foo");
+        int i = 0;
+        for (String item : actual) {
+            assertEquals("foo", item);
+            i++;
+        }
+        assertEquals(1, i);
+    }
+
+    @Test
+    public void shouldIterateThroughNone() throws Exception {
+        final Option<String> actual = none();
+        int i = 0;
+        for (String item : actual) {
+            System.out.println(item);
+            i++;
+        }
+        assertEquals(0, i);
     }
 }

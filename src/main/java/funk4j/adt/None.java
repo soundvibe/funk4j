@@ -3,13 +3,12 @@ package funk4j.adt;
 import funk4j.functions.*;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.*;
 
-/**
- * @author OZY on 2015.10.12.
- */
-public final class None<T> implements Option<T>, Serializable {
+final class None<T> implements Option<T>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -19,7 +18,7 @@ public final class None<T> implements Option<T>, Serializable {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> None<T> instance() {
+    static <T> None<T> instance() {
         return (None<T>) INSTANCE;
     }
 
@@ -59,6 +58,11 @@ public final class None<T> implements Option<T>, Serializable {
     }
 
     @Override
+    public Option<T> or(Supplier<Option<T>> supplier) {
+        return supplier.get();
+    }
+
+    @Override
     public T orElse(T other) {
         return other;
     }
@@ -86,5 +90,10 @@ public final class None<T> implements Option<T>, Serializable {
     @Override
     public String toString() {
         return "None";
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return Collections.emptyIterator();
     }
 }

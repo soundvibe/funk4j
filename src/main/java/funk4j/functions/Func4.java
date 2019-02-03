@@ -3,9 +3,6 @@ package funk4j.functions;
 import java.util.Objects;
 import java.util.function.Function;
 
-/**
- * @author Cipolinas on 2016.03.11.
- */
 public interface Func4<T1, T2, T3, T4, R> {
 
     R apply(T1 t1, T2 t2, T3 t3, T4 t4);

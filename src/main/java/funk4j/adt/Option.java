@@ -7,14 +7,10 @@ import java.util.function.*;
 import java.util.stream.Stream;
 
 /**
- * @author OZY on 2015.10.12.
- */
-
-/**
  * Represents optional values. Instances of Option are either an instance of Some or the object None.
  * The most idiomatic way to use an Option instance is to treat it as a collection or monad and use map,flatMap, filter, or foreach.
  */
-public interface Option<T>  {
+public interface Option<T> extends Iterable<T>  {
 
     long serialVersionUID = 1L;
 
@@ -53,15 +49,13 @@ public interface Option<T>  {
 
     <U> Option<U> cast(Class<U> aClass);
 
-    default void foreach(Consumer<? super T> consumer) {
-        ifPresent(consumer);
-    }
-
     Option<T> filter(Predicate<? super T> predicate);
 
     <U> Option<U> map(Func1<? super T, ? extends U> mapper);
 
     <U> Option<U> flatMap(Func1<? super T, Option<U>> mapper);
+
+    Option<T> or(Supplier<Option<T>> supplier);
 
     T orElse(T other);
 

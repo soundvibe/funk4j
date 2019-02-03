@@ -2,9 +2,6 @@ package funk4j.functions;
 
 import java.util.Objects;
 
-/**
- * @author OZY on 2015.06.12.
- */
 @FunctionalInterface
 public interface Func3<T1, T2, T3, R> {
 
